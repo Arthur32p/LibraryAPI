@@ -36,4 +36,44 @@ class LivroRepositoryTest {
         repository.save(livro);
     }
 
+    @Test
+    void salvarAutorELivroTest(){
+        Livro livro = new Livro();
+        livro.setIsbn("90887-84874");
+        livro.setPreco(BigDecimal.valueOf(89.9));
+        livro.setGenero(GeneroLivro.FANTASIA);
+        livro.setTitulo("Terceiro Livro");
+        livro.setDataPublicacao(LocalDate.of(1994, 7, 12));
+
+        Autor autor = new Autor();
+        autor.setNome("Joao");
+        autor.setNacionalidade("Frances");
+        autor.setDataNascimento(LocalDate.of(1950, 3, 21));
+
+        autorRepository.save(autor);
+
+        livro.setAutor(autor);
+
+        repository.save(livro);
+    }
+
+    @Test
+    void salvarCascadeTest(){
+        Livro livro = new Livro();
+        livro.setIsbn("90887-84874");
+        livro.setPreco(BigDecimal.valueOf(89.9));
+        livro.setGenero(GeneroLivro.FANTASIA);
+        livro.setTitulo("Livro");
+        livro.setDataPublicacao(LocalDate.of(1994, 7, 12));
+
+        Autor autor = new Autor();
+        autor.setNome("Jose");
+        autor.setNacionalidade("Ingles");
+        autor.setDataNascimento(LocalDate.of(1950, 3, 21));
+
+        livro.setAutor(autor);
+
+        repository.save(livro);
+    }
+
 }
