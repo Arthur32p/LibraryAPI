@@ -133,4 +133,12 @@ class LivroRepositoryTest {
         List<Livro> lista = repository.findByGenero(GeneroLivro.FANTASIA);
         lista.forEach(System.out::println);
     }
+
+    @Test
+    void pesquisaPorDataPublicacao(){
+        var inicio = LocalDate.of(1994, 1, 1);
+        var fim = LocalDate.of(1994, 12, 12);
+        List<Livro> lista = repository.findByDataPublicacaoBetween(inicio, fim);
+        lista.forEach(System.out::println);
+    }
 }

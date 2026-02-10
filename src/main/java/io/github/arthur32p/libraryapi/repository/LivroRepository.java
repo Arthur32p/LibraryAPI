@@ -6,6 +6,7 @@ import io.github.arthur32p.libraryapi.model.Livro;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,4 +21,6 @@ public interface LivroRepository extends JpaRepository<Livro, UUID> {
     List<Livro> findByTituloAndPreco(String titulo, BigDecimal preco);
 
     List<Livro> findByGenero(GeneroLivro genero);
+
+    List<Livro> findByDataPublicacaoBetween(LocalDate inicio, LocalDate fim);
 }
