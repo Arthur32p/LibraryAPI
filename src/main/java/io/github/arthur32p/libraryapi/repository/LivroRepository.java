@@ -5,6 +5,7 @@ import io.github.arthur32p.libraryapi.model.GeneroLivro;
 import io.github.arthur32p.libraryapi.model.Livro;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -25,7 +26,16 @@ public interface LivroRepository extends JpaRepository<Livro, UUID> {
 
     List<Livro> findByTituloAndPreco(String titulo, BigDecimal preco);
 
-    List<Livro> findByGenero(GeneroLivro genero);
+    //named parameters
+    @Query("select l from Livro l where l.genero = :genero order by :nomePropriedade ")
+    List<Livro> findByGenero(
+            @Param("genero") GeneroLivro genero,
+            @Param("nomePropriedade") String propriedade
+    );
+
+    @Query("select l from Livro l where l.genero = ?1 order by ?2 ")
+    List<Livro> findByGeneroPositionalParameters(GeneroLivro genero, String propriedade
+    );
 
     List<Livro> findByDataPublicacaoBetween(LocalDate inicio, LocalDate fim);
 

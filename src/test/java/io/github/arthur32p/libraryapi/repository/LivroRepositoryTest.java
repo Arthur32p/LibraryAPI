@@ -130,7 +130,13 @@ class LivroRepositoryTest {
 
     @Test
     void pesquisaPorGenero(){
-        List<Livro> lista = repository.findByGenero(GeneroLivro.FANTASIA);
+        var lista = repository.findByGenero(GeneroLivro.FANTASIA, "titulo");
+        lista.forEach(System.out::println);
+    }
+
+    @Test
+    void pesquisaPorGeneroPositionalParameters(){
+        var lista = repository.findByGeneroPositionalParameters(GeneroLivro.FANTASIA, "titulo");
         lista.forEach(System.out::println);
     }
 
