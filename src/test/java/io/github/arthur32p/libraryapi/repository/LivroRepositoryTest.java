@@ -28,10 +28,10 @@ class LivroRepositoryTest {
         livro.setIsbn("90887-84874");
         livro.setPreco(BigDecimal.valueOf(89.9));
         livro.setGenero(GeneroLivro.FANTASIA);
-        livro.setTitulo("It a Coisa");
+        livro.setTitulo("Eita");
         livro.setDataPublicacao(LocalDate.of(1994, 7, 12));
 
-        Autor autor = autorRepository.findById(UUID.fromString("7eb1ee27-da7d-471d-8277-b8026fe39225")).orElse(null);
+        Autor autor = autorRepository.findById(UUID.fromString("77b6f3ab-bf55-44b1-9fff-a99acb6f8eaf")).orElse(null);
 
         livro.setAutor(autor);
 
@@ -140,5 +140,29 @@ class LivroRepositoryTest {
         var fim = LocalDate.of(1994, 12, 12);
         List<Livro> lista = repository.findByDataPublicacaoBetween(inicio, fim);
         lista.forEach(System.out::println);
+    }
+
+    @Test
+    void listarLivrosComQueryJPL(){
+        var resultado = repository.listarTodosOrdenadoPorTituloAndPreco();
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void listarAutoresDosLivros(){
+        var resultado = repository.listarAutoresDosLivros();
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void listarTitulosNaoRepetidosLivros(){
+        var resultado = repository.listarNomesDiferentesLivros();
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void listarGenerosDeLivrosAutoresBrasileiros(){
+        var resultado = repository.listarGenerosAutoresBrasileiros();
+        resultado.forEach(System.out::println);
     }
 }
