@@ -4,8 +4,10 @@ import io.github.arthur32p.libraryapi.model.Autor;
 import io.github.arthur32p.libraryapi.model.GeneroLivro;
 import io.github.arthur32p.libraryapi.model.Livro;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -56,4 +58,14 @@ public interface LivroRepository extends JpaRepository<Livro, UUID> {
             order by genero
             """)
     List<String> listarGenerosAutoresBrasileiros();
+
+    @Modifying
+    @Transactional
+    @Query("delete from Livro where genero = ?1")
+    void deleteByGenero(GeneroLivro genero);
+
+    @Modifying
+    @Transactional
+    @Query("update Livro set dataPublicacao = ?1 where titulo = ?2")
+    void updateDataPublicacao(LocalDate novaData, String titulo);
 }

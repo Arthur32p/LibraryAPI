@@ -171,4 +171,14 @@ class LivroRepositoryTest {
         var resultado = repository.listarGenerosAutoresBrasileiros();
         resultado.forEach(System.out::println);
     }
+
+    @Test
+    void deletePorGeneroTest(){
+        repository.deleteByGenero(GeneroLivro.FICCAO);
+    }
+
+    @Test
+    void updateDataPublicacaoTest(){
+        repository.updateDataPublicacao(LocalDate.of(1986, 9, 15), "It a Coisa");
+    }
 }
