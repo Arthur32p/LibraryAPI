@@ -1,15 +1,16 @@
 package io.github.arthur32p.libraryapi.controller;
 
 import io.github.arthur32p.libraryapi.controller.dto.AutorDTO;
+import io.github.arthur32p.libraryapi.controller.dto.AutorResponse;
+import io.github.arthur32p.libraryapi.model.Autor;
 import io.github.arthur32p.libraryapi.service.AutorService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("autores")
@@ -33,5 +34,19 @@ public class AutorController {
                 .toUri();
 
         return ResponseEntity.created(location).build();
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<AutorResponse> obterDetalhes(@PathVariable("id") String id){
+        var idAutor = UUID.fromString(id);
+        Optional<Autor> autorOptional = service.obterPorId(idAutor);
+        if(autorOptional.isPresent()){
+            Autor autor = autorOptional.get();
+            AutorResponse response = new AutorResponse(autor.getId(), autor.getNome(), autor.getDataNascimento(), autor.getNacionalidade());
+
+            return ResponseEntity.ok(response);
+        }
+
+        return ResponseEntity.notFound().build();
     }
 }
