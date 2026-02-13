@@ -1,8 +1,11 @@
 package io.github.arthur32p.libraryapi.service;
 
+import io.github.arthur32p.libraryapi.exceptions.OperacaoNaoPermitidaException;
 import io.github.arthur32p.libraryapi.model.Autor;
 import io.github.arthur32p.libraryapi.repository.AutorRepository;
+import io.github.arthur32p.libraryapi.repository.LivroRepository;
 import io.github.arthur32p.libraryapi.validator.AutorValidator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,15 +13,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class AutorService {
 
     private final AutorRepository repository;
     private final AutorValidator validator;
-
-    public AutorService(AutorRepository repository, AutorValidator validator){
-        this.repository = repository;
-        this.validator = validator;
-    }
+    private final LivroRepository livroRepository;
 
     public Autor salvar(Autor autor){
         validator.validar(autor);
@@ -39,6 +39,10 @@ public class AutorService {
     }
 
     public void excluir(Autor autor){
+        if(possuiLivro(autor)){
+            throw new OperacaoNaoPermitidaException("Não é permitido excuir o autor que possui livros cadastrados");
+        }
+
         repository.delete(autor);
     }
 
@@ -56,5 +60,9 @@ public class AutorService {
         }
 
         return repository.findAll();
+    }
+
+    public boolean possuiLivro(Autor autor){
+        return livroRepository.existsByAutor(autor);
     }
 }

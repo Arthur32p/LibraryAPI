@@ -29,12 +29,12 @@ public interface LivroRepository extends JpaRepository<Livro, UUID> {
     List<Livro> findByTituloAndPreco(String titulo, BigDecimal preco);
 
     //named parameters
+
     @Query("select l from Livro l where l.genero = :genero order by :nomePropriedade ")
     List<Livro> findByGenero(
             @Param("genero") GeneroLivro genero,
             @Param("nomePropriedade") String propriedade
     );
-
     @Query("select l from Livro l where l.genero = ?1 order by ?2 ")
     List<Livro> findByGeneroPositionalParameters(GeneroLivro genero, String propriedade
     );
@@ -68,4 +68,6 @@ public interface LivroRepository extends JpaRepository<Livro, UUID> {
     @Transactional
     @Query("update Livro set dataPublicacao = ?1 where titulo = ?2")
     void updateDataPublicacao(LocalDate novaData, String titulo);
+
+    boolean existsByAutor(Autor autor);
 }
