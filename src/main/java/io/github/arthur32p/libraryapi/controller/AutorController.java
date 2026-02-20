@@ -7,6 +7,7 @@ import io.github.arthur32p.libraryapi.exceptions.OperacaoNaoPermitidaException;
 import io.github.arthur32p.libraryapi.exceptions.RegistroDuplicadoException;
 import io.github.arthur32p.libraryapi.model.Autor;
 import io.github.arthur32p.libraryapi.service.AutorService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class AutorController {
     private final AutorService service;
 
     @PostMapping
-    public ResponseEntity<Object> salvar(@RequestBody AutorDTO autor){
+    public ResponseEntity<Object> salvar(@RequestBody @Valid AutorDTO autor){
         try {
             var autorEntidade = autor.mapearParaAutor();
             service.salvar(autorEntidade);
@@ -81,7 +82,7 @@ public class AutorController {
     public ResponseEntity<List<AutorResponse>> pesquisar(
             @RequestParam(value = "nome", required = false) String nome,
             @RequestParam(value = "nacionalidade", required = false) String nacionalidade){
-        List<Autor> resultado =  service.pesquisa(nome, nacionalidade);
+        List<Autor> resultado =  service.pesquisaByExample(nome, nacionalidade);
         List<AutorResponse> lista = resultado.
                 stream().
                 map(autor -> new AutorResponse(
@@ -95,7 +96,7 @@ public class AutorController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Object> atualizar(@PathVariable("id") String id, @RequestBody AutorDTO dto){
+    public ResponseEntity<Object> atualizar(@PathVariable("id") String id, @RequestBody @Valid AutorDTO dto){
         try {
             var idAutor = UUID.fromString(id);
             Optional<Autor> autorOptional = service.obterPorId(idAutor);
