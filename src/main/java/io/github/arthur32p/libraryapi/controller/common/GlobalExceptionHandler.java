@@ -2,6 +2,7 @@ package io.github.arthur32p.libraryapi.controller.common;
 
 import io.github.arthur32p.libraryapi.controller.dto.ErroCampo;
 import io.github.arthur32p.libraryapi.controller.dto.ErroResposta;
+import io.github.arthur32p.libraryapi.exceptions.CampoInvalidoException;
 import io.github.arthur32p.libraryapi.exceptions.OperacaoNaoPermitidaException;
 import io.github.arthur32p.libraryapi.exceptions.RegistroDuplicadoException;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,15 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErroResposta handlerOperacaoNaoPermitidaException(OperacaoNaoPermitidaException e){
         return ErroResposta.respostaPadrao(e.getMessage());
+    }
+
+    @ExceptionHandler(CampoInvalidoException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ErroResposta handlerCampoInvalidoException(CampoInvalidoException e){
+        return new ErroResposta(
+                HttpStatus.UNPROCESSABLE_ENTITY.value(),
+                "Erro de validação.",
+                List.of(new ErroCampo(e.getCampo(), e.getMessage())));
     }
 
     @ExceptionHandler(RuntimeException.class)
