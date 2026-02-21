@@ -1,9 +1,7 @@
 package io.github.arthur32p.libraryapi.controller;
 
 import io.github.arthur32p.libraryapi.controller.dto.CadastroLivroDTO;
-import io.github.arthur32p.libraryapi.controller.dto.ErroResposta;
 import io.github.arthur32p.libraryapi.controller.mappers.LivroMapper;
-import io.github.arthur32p.libraryapi.exceptions.RegistroDuplicadoException;
 import io.github.arthur32p.libraryapi.model.Livro;
 import io.github.arthur32p.libraryapi.service.LivroService;
 import jakarta.validation.Valid;
@@ -19,21 +17,16 @@ import java.net.URI;
 @RestController
 @RequestMapping("livros")
 @RequiredArgsConstructor
-public class LivroController implements GenericController{
+public class LivroController implements GenericController {
 
     private final LivroService service;
     private final LivroMapper mapper;
 
     @PostMapping
-    public ResponseEntity<Object> salvar(@RequestBody @Valid CadastroLivroDTO dto){
-        try{
-            Livro livro = mapper.toEntity(dto);
-            service.salvar(livro);
-            URI location = gerarHeaderLocation(livro.getId());
-            return ResponseEntity.created(location).build();
-        } catch (RegistroDuplicadoException e){
-            var erroDTO = ErroResposta.conflito(e.getMessage());
-            return ResponseEntity.status(erroDTO.status()).body(erroDTO);
-        }
+    public ResponseEntity<Void> salvar(@RequestBody @Valid CadastroLivroDTO dto) {
+        Livro livro = mapper.toEntity(dto);
+        service.salvar(livro);
+        URI location = gerarHeaderLocation(livro.getId());
+        return ResponseEntity.created(location).build();
     }
 }
