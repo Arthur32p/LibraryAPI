@@ -3,6 +3,7 @@ package io.github.arthur32p.libraryapi.controller;
 import io.github.arthur32p.libraryapi.controller.dto.CadastroLivroDTO;
 import io.github.arthur32p.libraryapi.controller.dto.ResultadoPesquisaLivroDTO;
 import io.github.arthur32p.libraryapi.controller.mappers.LivroMapper;
+import io.github.arthur32p.libraryapi.model.Autor;
 import io.github.arthur32p.libraryapi.model.Livro;
 import io.github.arthur32p.libraryapi.service.LivroService;
 import jakarta.validation.Valid;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -35,6 +37,15 @@ public class LivroController implements GenericController {
                 .map(livro -> {
                     var dto = mapper.toDTO(livro);
                     return ResponseEntity.ok(dto);
+                }).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Object> excluir(@PathVariable("id") String id) {
+        return service.obterPorId(UUID.fromString(id))
+                .map(livro -> {
+                    service.excluir(livro);
+                    return ResponseEntity.noContent().build();
                 }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
