@@ -59,11 +59,14 @@ Todas as entidades principais contam com rastreabilidade automática:
    * Instância do PostgreSQL ativa.
 
 2. **Configuração do Banco**:
-   Ajuste as propriedades no arquivo `src/main/resources/application.properties`:
+   Ajuste as propriedades no arquivo `src/main/resources/application.yaml`:
    ```properties
-   spring.datasource.url=jdbc:postgresql://localhost:5432/libraryapi
-   spring.datasource.username=seu_usuario
-   spring.datasource.password=sua_senha
+   spring:
+    datasource:
+      url: jdbc:postgresql://localhost:5432/libraryapi
+      username: seu_usuario
+      password: sua_senha
+      driver-class-name: org.postgresql.Driver
 
 ---
 **Projeto desenvolvido para fins de estudos de Spring Boot**
