@@ -1,0 +1,21 @@
+spring:
+  application:
+    name:
+  datasource:
+    url:
+    username:
+    password:
+    driver-class-name:
+  jpa:
+    show-sql:
+    properties:
+      hibernate.format_sql:
+    hibernate:
+    # ddl-auto: create
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id:
+            client-secret:
